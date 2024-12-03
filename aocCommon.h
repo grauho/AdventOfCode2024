@@ -10,6 +10,9 @@
 #pragma clang diagnostic ignored "-Wunused-function" 
 #endif
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #ifndef AOC_ASSERT
 #include <assert.h>
 #define AOC_ASSERT assert
@@ -120,6 +123,30 @@ static size_t rightBinSearch(void *arr, const size_t len, const void *target,
 	}
 
 	return right - 1;
+}
+
+static long int getFileLength(FILE *f_handle)
+{
+	long int length = -1;
+
+	if (f_handle != NULL)
+	{
+		const long int initial = ftell(f_handle);
+
+		if (fseek(f_handle, 0, SEEK_END) == -1)
+		{
+			return -1;
+		}
+
+		length = ftell(f_handle);
+
+		if (fseek(f_handle, initial, SEEK_SET) == -1)
+		{
+			return -1;
+		}
+	}
+
+	return length;
 }
 
 #if defined(__GNUC__)
