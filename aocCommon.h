@@ -38,6 +38,17 @@ do                                                                      \
 	(len) = AOC_EXPAND_LEN;                                         \
 } while (0)
 
+#define AOC_CAT_DYN_ARR(type, arr, len, max, val)     \
+do                                                    \
+{                                                     \
+	if ((len) == (max))                           \
+	{                                             \
+		AOC_GROW_DYN_ARR(type, (arr), (max)); \
+	}                                             \
+	                                              \
+	(arr)[(len)++] = (val);                       \
+} while (0)
+
 #define AOC_FREE(ptr)         \
 do                            \
 {                             \
@@ -47,6 +58,14 @@ do                            \
 		(ptr) = NULL; \
 	}                     \
 } while (0)                   \
+
+#define AOC_SWAP(type, left, right) \
+do                                  \
+{                                   \
+	type AOC_SWAP_TMP = (left); \
+	(left) = (right);           \
+	(right) = AOC_SWAP_TMP;     \
+} while (0)
 
 #define AOC_BOOL    unsigned char
 #define AOC_STAT    signed char
