@@ -218,10 +218,8 @@ static AOC_BOOL isPosInfinite(struct guardMap map,
 			}
 			else
 			{
-				AOC_CAT_DYN_ARR(struct pivotPoint, visited, 
-					len, max, tmp);
-				qsort(visited, len, sizeof(struct pivotPoint), 
-					comparePivotPoints);
+				AOC_INSERT_CAT(struct pivotPoint, visited, 
+					len, max, tmp, comparePivotPoints);
 			}
 		}
 		else
@@ -279,10 +277,8 @@ static long int calculatePart2(struct guardMap map, struct coordinate guard)
 			{
 				infinite_positions 
 					+= isPosInfinite(map, guard, curr_dir);
-				AOC_CAT_DYN_ARR(struct pivotPoint, tested, 
-					len, max, key);
-				qsort(tested, len, sizeof(struct pivotPoint),
-					comparePivotPoints);
+				AOC_INSERT_CAT(struct pivotPoint, tested, len, 
+					max, key, comparePivotPoints);
 			}
 
 			guard = key.position;
