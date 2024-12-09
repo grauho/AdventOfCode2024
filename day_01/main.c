@@ -3,7 +3,7 @@
 
 #include "../aocCommon.h"
 
-#define BUFFER_LEN 24
+#define BUFFER_LEN (24)
 
 enum
 {
@@ -137,8 +137,7 @@ static int similarityScore(int **lists, const size_t len)
 
 int main(int argc, char **argv)
 {
-	int **vals = NULL;
-	size_t len;
+	size_t i, len;
 
 	if (argc < 2)
 	{
@@ -147,21 +146,26 @@ int main(int argc, char **argv)
 		return AOC_FAILURE;
 	}
 
-	if ((vals = slurpLists(argv[1], &len)) == NULL)
+	for (i = 1; i < argc; i++)
 	{
-		fprintf(stderr, "Failed to slurp inputs\n");
+		int **vals = NULL;
 
-		return AOC_FAILURE;
+		if ((vals = slurpLists(argv[i], &len)) == NULL)
+		{
+			fprintf(stderr, "Failed to slurp inputs\n");
+
+			return AOC_FAILURE;
+		}
+
+		fprintf(stdout, "Cumulative difference: %u\n", 
+			differenceScore(vals, len));
+		fprintf(stdout, "Similarity score: %u\n",
+			similarityScore(vals, len));
+
+		AOC_FREE(vals[LEFT_LIST]);
+		AOC_FREE(vals[RIGHT_LIST]);
+		AOC_FREE(vals);
 	}
-
-	fprintf(stdout, "Cumulative difference: %u\n", 
-		differenceScore(vals, len));
-	fprintf(stdout, "Similarity score: %u\n",
-		similarityScore(vals, len));
-
-	AOC_FREE(vals[LEFT_LIST]);
-	AOC_FREE(vals[RIGHT_LIST]);
-	AOC_FREE(vals);
 
 	return AOC_SUCCESS;
 }

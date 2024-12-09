@@ -23,10 +23,10 @@
 #define AOC_ASSERT assert
 #endif /* AOC_ASSERT */
 
-#define AOC_NEW_DYN_ARR(type, arr_ptr, len)       \
+#define AOC_NEW_DYN_ARR(type, arr_ptr, max)       \
 do                                                \
 {                                                 \
-	(arr_ptr) = malloc(sizeof(type) * (len)); \
+	(arr_ptr) = malloc(sizeof(type) * (max)); \
 	AOC_ASSERT((arr_ptr) != NULL);            \
 } while (0)
 

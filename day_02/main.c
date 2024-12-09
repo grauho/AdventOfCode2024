@@ -5,7 +5,7 @@
 
 #include "../aocCommon.h"
 
-#define BUFFER_LEN 128
+#define BUFFER_LEN (128)
 
 static long int extractValue(const char * const str)
 {
@@ -111,7 +111,7 @@ static int parseLevels(FILE *input, const AOC_BOOL use_dampener)
 
 int main(int argc, char **argv)
 {
-	FILE *f_handle = NULL;
+	size_t i;
 
 	if (argc < 2)
 	{
@@ -120,20 +120,25 @@ int main(int argc, char **argv)
 		return AOC_FAILURE;
 	}
 
-	if ((f_handle = fopen(argv[1], "rb")) == NULL)
+	for (i = 1; i < argc; i++)
 	{
-		fprintf(stderr, "Failed to open file '%s' for reading\n",
-			argv[1]);
+		FILE *f_handle = NULL;
 
-		return AOC_FAILURE;
+		if ((f_handle = fopen(argv[i], "rb")) == NULL)
+		{
+			fprintf(stderr, "Failed to open file '%s' for reading\n",
+				argv[i]);
+
+			return AOC_FAILURE;
+		}
+
+		fprintf(stdout, "undampened %d levels are safe\n", 
+			parseLevels(f_handle, AOC_FALSE));
+		rewind(f_handle);
+		fprintf(stdout, "dampened %d levels are safe\n", 
+			parseLevels(f_handle, AOC_TRUE));
+		fclose(f_handle);
 	}
-
-	fprintf(stdout, "undampened %d levels are safe\n", 
-		parseLevels(f_handle, AOC_FALSE));
-	rewind(f_handle);
-	fprintf(stdout, "dampened %d levels are safe\n", 
-		parseLevels(f_handle, AOC_TRUE));
-	fclose(f_handle);
 
 	return AOC_SUCCESS;
 }

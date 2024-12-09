@@ -37,12 +37,6 @@ struct guardMap
 	size_t cols;
 };
 
-struct coordArray
-{
-	struct coordinate *data;
-	size_t len;
-};
-
 static AOC_STAT parseInput(FILE *input, struct guardMap *map)
 {
 	char buffer[BUFFER_LEN] = {0};
@@ -112,7 +106,6 @@ static long int calculatePart1(struct guardMap map, struct coordinate guard)
 {
 	long int unique = 0;
 	size_t curr_dir = DIR_NORTH; 
-	size_t i, j;
 
 	while ((guard.x_pos < map.cols) && (guard.y_pos < map.rows))
 	{
@@ -126,17 +119,14 @@ static long int calculatePart1(struct guardMap map, struct coordinate guard)
 		}
 		else
 		{
+			if (map.data[guard.y_pos][guard.x_pos] != '%')
+			{
+				unique++;
+			}
+
 			map.data[guard.y_pos][guard.x_pos] = '%';
 			guard.x_pos = new_x;
 			guard.y_pos = new_y;
-		}
-	}
-
-	for (i = 0; i < map.rows; i++)
-	{
-		for (j = 0; j < map.cols; j++)
-		{
-			unique += (map.data[i][j] == '%');
 		}
 	}
 
@@ -247,6 +237,7 @@ static long int calculatePart2(struct guardMap map, struct coordinate guard)
 	AOC_NEW_DYN_ARR(struct pivotPoint, tested, max);
 	tested[0].position = guard;
 	tested[0].heading = 0;
+	len++;
 
 	for (;;)
 	{
@@ -336,7 +327,6 @@ int main(int argc, char **argv)
 
 		fprintf(stdout, "Part 1: %lu\n", calculatePart1(map, guard));
 		fprintf(stdout, "Part 2: %lu\n", calculatePart2(map, guard));
-
 		freeMap(&map);
 		fclose(input);
 	}

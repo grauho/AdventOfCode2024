@@ -213,8 +213,7 @@ static struct searchGrid* slurpFileToGrid(FILE *input)
 
 int main(int argc, char **argv)
 {
-	FILE *input;
-	struct searchGrid *grid = NULL;
+	size_t i;
 
 	if (argc < 2)
 	{
@@ -223,26 +222,34 @@ int main(int argc, char **argv)
 		return AOC_FAILURE;
 	}
 
-	if ((input = fopen(argv[1], "rb")) == NULL)
+	for (i = 1; i < argc; i++)
 	{
-		fprintf(stderr, "Unable to open file '%s' for reading\n",
-			argv[1]);
+		FILE *input;
+		struct searchGrid *grid = NULL;
 
-		return AOC_FAILURE;
-	}
+		if ((input = fopen(argv[i], "rb")) == NULL)
+		{
+			fprintf(stderr, 
+				"Unable to open file '%s' for reading\n",
+				argv[i]);
 
-	if ((grid = slurpFileToGrid(input)) == NULL)
-	{
-		fputs("Failed to parse input into search grid\n", stderr);
+			return AOC_FAILURE;
+		}
+
+		if ((grid = slurpFileToGrid(input)) == NULL)
+		{
+			fputs("Failed to parse input into search grid\n", 
+				stderr);
+			fclose(input);
+
+			return AOC_FAILURE;
+		}
+
+		fprintf(stdout, "Part 1: %lu matches\n", searchPart1(grid));
+		fprintf(stdout, "Part 2: %lu matches\n", searchPart2(grid));
+		freeGrid(grid);
 		fclose(input);
-
-		return AOC_FAILURE;
 	}
-
-	fprintf(stdout, "Part 1: %lu matches\n", searchPart1(grid));
-	fprintf(stdout, "Part 2: %lu matches\n", searchPart2(grid));
-	freeGrid(grid);
-	fclose(input);
 
 	return AOC_SUCCESS;
 }

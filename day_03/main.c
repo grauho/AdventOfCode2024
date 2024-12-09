@@ -147,7 +147,7 @@ static unsigned long int parseInputPart2(const char *str)
 
 				break;
 			default:
-				AOC_ASSERT(0 || "UNREACHABLE");
+				AOC_ASSERT(0 && "UNREACHABLE");
 
 				break;
 		}
@@ -158,8 +158,7 @@ static unsigned long int parseInputPart2(const char *str)
 
 int main(int argc, char **argv)
 {
-	FILE *f_handle = NULL;
-	char *slurped = NULL;
+	size_t i;
 
 	if (argc < 2)
 	{
@@ -168,20 +167,29 @@ int main(int argc, char **argv)
 		return AOC_FAILURE;
 	}
 
-	if ((f_handle = fopen(argv[1], "rb")) == NULL)
+	for (i = 1; i < argc; i++)
 	{
-		fprintf(stderr, "Unable to open file '%s' for reading\n",
-			argv[1]);
-	}
+		FILE *f_handle = NULL;
+		char *slurped = NULL;
 
-	if ((slurped = slurpFile(f_handle)) != NULL)
-	{
-		fprintf(stdout, "Part 1: %lu\n", parseInputPart1(slurped));
-		fprintf(stdout, "Part 2: %lu\n", parseInputPart2(slurped));
-	}
+		if ((f_handle = fopen(argv[i], "rb")) == NULL)
+		{
+			fprintf(stderr, 
+				"Unable to open file '%s' for reading\n",
+				argv[i]);
+		}
 
-	fclose(f_handle);
-	AOC_FREE(slurped);
+		if ((slurped = slurpFile(f_handle)) != NULL)
+		{
+			fprintf(stdout, "Part 1: %lu\n", 
+				parseInputPart1(slurped));
+			fprintf(stdout, "Part 2: %lu\n", 
+				parseInputPart2(slurped));
+		}
+
+		fclose(f_handle);
+		AOC_FREE(slurped);
+	}
 
 	return AOC_SUCCESS;
 }
