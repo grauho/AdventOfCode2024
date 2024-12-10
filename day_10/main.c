@@ -28,8 +28,8 @@ struct visisted
 
 const struct dirMap
 {
-	const size_t delta_x;
-	const size_t delta_y;
+	const int delta_x;
+	const int delta_y;
 } dir_map[] = 
 {
 	{0, -1}, /* NORTH */
